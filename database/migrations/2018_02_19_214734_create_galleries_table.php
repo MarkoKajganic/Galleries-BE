@@ -19,7 +19,7 @@ class CreateGalleriesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('description');
-            $table->string('images');
+            $table->string('image_urls');
 
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
