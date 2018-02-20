@@ -11,6 +11,8 @@ class CreateGalleriesTable extends Migration
      *
      * @return void
      */
+ 
+
     public function up()
     {
         Schema::create('galleries', function (Blueprint $table) {
@@ -18,8 +20,17 @@ class CreateGalleriesTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('images');
+
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            
+            $table->timestamps();    
         });
     }
+
 
     /**
      * Reverse the migrations.

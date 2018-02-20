@@ -13,12 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::get('galleries', 'GalleriesController@index');
-Route::get('galleries/{id}', 'GalleriesController@show');
-Route::post('galleries', 'GalleriesController@store');
-Route::put('galleries/{id}', 'GalleriesController@update');
-Route::delete('galleries/{id}', 'GalleriesController@destroy');
+Route::post('/login', 'Auth\LoginController@authenticate');
+Route::post('/register', 'RegisterController@register');
+//Route::post('/register', 'Auth\RegisterController@create');
+
+Route::middleware('jwt')->get('galleries', 'GalleriesController@index');
+Route::middleware('jwt')->get('galleries/{id}', 'GalleriesController@show');
+Route::middleware('jwt')->post('galleries', 'GalleriesController@store');
+Route::middleware('jwt')->put('galleries/{id}', 'GalleriesController@update');
+Route::middleware('jwt')->delete('galleries/{id}', 'GalleriesController@destroy');
