@@ -26,6 +26,7 @@ class Register extends FormRequest
             'lastName' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed|regex:/\w*[0-9]{1,}\w*/',
+            'accepted_terms' => 'required'
         ];
     }
 }
