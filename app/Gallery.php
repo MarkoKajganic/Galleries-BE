@@ -6,11 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gallery extends Model
 {
-    //Seeder will automatically try to fill created_at and updated_at unless
-    //we explicitly tell it not to do that by adding this:
+    
 	public $timestamps = false;
 	
-	//This is allowing us to use mass assignment
 	protected $fillable = [
         'title', 'description', 'image_urls', 
     ];
@@ -20,14 +18,26 @@ class Gallery extends Model
     //   'image_urls' => 'array'
     // ];
 
+    public static function getAllGalleries() {
+        return self::with('user')->get();
+    }
+
+    public static function getOneGallery($id) {
+        return self::with('user')->find($id);
+    }
+
     public static function search($term)      //($term, $skip, $take)
     {
-        return self::where('title', 'LIKE', '%'.$term.'%')->get();
+        return self::with('user')->where('title', 'LIKE', '%'.$term.'%')
+                                 ->orWhere('description', 'LIKE', '%'.$term.'%')->get();
+                                 
+
+        
         //return self::where('title', 'LIKE', '%'.$term.'%')->skip($skip)->take($take)->get();
     }
 
-    public function author() {
-        return $this->hasOne(User::class);
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
 }

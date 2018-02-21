@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gallery;
+use App\User;
 
 class GalleriesController extends Controller
 {
@@ -15,7 +16,7 @@ class GalleriesController extends Controller
         if ($term) {
             return Gallery::search($term);
         } else {
-            return Gallery::all();
+            return Gallery::getAllGalleries();
         }
 
     }
@@ -23,7 +24,7 @@ class GalleriesController extends Controller
 
     public function show($id)
     {
-        return Gallery::findOrFail($id);
+        return Gallery::getOneGallery($id);
     }
 
 
