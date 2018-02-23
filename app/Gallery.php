@@ -13,17 +13,17 @@ class Gallery extends Model
         'user_id', 'title', 'description', 'image_urls', 'created_at'
     ];
 
-    //Making Accessor & Mutator
-    // protected $casts = [
-    //   'image_urls' => 'array'
-    // ];
 
+//FUNKCIJE
     public static function getAllGalleries() {
         return self::with('user')->get();
     }
 
-    public static function getOneGallery($id) {
-        return self::with('user')->find($id);
+    public static function getOneGallery($id) {     //With comments - lose resenje
+        $gallery = self::with('user')->find($id);   //nadji galeriju
+        $comments = new Comment();                  //da bi mogao da pozove funkciju iz Comment modela
+        $gallery->comments = $comments->getComments($gallery->id); //nadji komentare i dodaj ih u galleriju
+        return $gallery;
     }
 
     public static function getGalleriesFromSameUser($id) {
@@ -41,11 +41,7 @@ class Gallery extends Model
             'image_urls' => $request['image_urls'],
             'created_at' => date("Y-m-d H:i:s")
         ]);
-            
-            // $request->all());
     }
-
-
 
     public static function search($term)      //($term, $skip, $take)
     {
@@ -54,11 +50,10 @@ class Gallery extends Model
                                  ->orWhereHas('user', function ($query) use ($term) {
                                     return $query->where('first_name', 'LIKE', '%' . $term . '%');
                                     })
-                                   ->get();
-        
-        //return self::where('title', 'LIKE', '%'.$term.'%')->skip($skip)->take($take)->get();
+                                 ->get();
     }
 
+//RELACIJE
     public function user() {
         return $this->belongsTo(User::class);
     }

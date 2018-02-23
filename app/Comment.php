@@ -9,7 +9,7 @@ class Comment extends Model
     
 	
 	protected $fillable = [
-        'body' 
+        'body'                  //i id-evi
     ];
 
     public function user() {
@@ -18,6 +18,10 @@ class Comment extends Model
 
     public function gallery() {
         return $this->belongsTo(Gallery::class);
+    }
+
+    public function getComments($gallery_id) {
+        return self::with('user')->where('gallery_id', 'LIKE', '%'.$gallery_id.'%')->get();
     }
 
 }
